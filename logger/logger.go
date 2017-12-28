@@ -4,13 +4,16 @@ import (
 	"os"
 	"time"
 	"fmt"
+	"strings"
 )
 
-const LDebug = 0
-const LInfo = 1
-const LWarn = 2
-const LError = 3
-const LFatal = 4
+const (
+	LDebug = iota
+	LInfo
+	LWarn
+	LError
+	LFatal
+)
 
 type Logger struct {
 	FileName string
@@ -24,7 +27,7 @@ func NewLogger(file string, printToStdout bool) *Logger {
 	var err error
 
 	if file != "" {
-		logger.File, err = os.Create(file)
+		logger.File, err = os.OpenFile(file, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 		check(err)
 	}
 
@@ -62,8 +65,10 @@ func (l Logger) Fatal(args ...interface{}) {
 }
 
 func (l Logger) Log(tag string, args ...interface{}){
-	prefix := time.Now().String() + ": "
-	msg := "[" + tag + "] " + prefix + fmtLogMsg(args...)
+	// 2017/12/28 16:53:12
+	tfmt := "2006/01/2 15:04:05 MST"
+	prefix := time.Now().Format(tfmt)
+	msg := "" + tag + "|" + "" + prefix + "| " + fmtLogMsg(args...)
 	fmt.Println(msg)
 
 	if l.File != nil {
@@ -73,13 +78,13 @@ func (l Logger) Log(tag string, args ...interface{}){
 }
 
 func fmtLogMsg(args ...interface{}) string {
-	out := ""
+	var argsStr = []string{}
 
 	for _, v := range args {
-		out += fmt.Sprintf("%T(%+v), ", v, v)
+		argsStr = append(argsStr, fmt.Sprintf("%#v", v))
 	}
 
-	return out
+	return strings.Join(argsStr, ", ")
 }
 
 func check(e error){

@@ -5,7 +5,8 @@ import (
 )
 
 func main(){
-	logger := logger.NewLogger("./log_test.log", true)
-	logger.Debug("This is debug", 1, true, "nice debugging", logger)
-	logger.Info("And this is info", 1)
+	log := logger.NewLogger("./log_test.log", true)
+	//log.Level = logger.LInfo
+	log.Debug("This is debug", 1, true, "nice debugging", log)
+	log.Info("And this is info", 1)
 }
