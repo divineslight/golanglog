@@ -81,6 +81,11 @@ func fmtLogMsg(args ...interface{}) string {
 	var argsStr = []string{}
 
 	for _, v := range args {
+		// error needs special treatment
+		if _, ok := v.(error); ok {
+			argsStr = append(argsStr, fmt.Sprintf("%v", v))
+			continue
+		}
 		argsStr = append(argsStr, fmt.Sprintf("%#v", v))
 	}
 
