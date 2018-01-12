@@ -60,21 +60,23 @@ func (l Logger) Error(args ...interface{}) {
 
 func (l Logger) Fatal(args ...interface{}) {
 	if l.Level <= LInfo {
-		l.Log("FATAL", args...)
+		panic(l.Log("FATAL", args...))
 	}
 }
 
-func (l Logger) Log(tag string, args ...interface{}){
+func (l Logger) Log(tag string, args ...interface{}) (msg string) {
 	// 2017/12/28 16:53:12
 	tfmt := "2006/01/2 15:04:05 MST"
 	prefix := time.Now().Format(tfmt)
-	msg := "" + tag + "|" + "" + prefix + "| " + fmtLogMsg(args...)
-	fmt.Println(msg)
+	msg = "" + tag + "|" + "" + prefix + "| " + fmtLogMsg(args...) + "\n"
+	fmt.Print(msg)
 
 	if l.File != nil {
-		l.File.WriteString(msg + "\n")
+		l.File.WriteString(msg)
 		l.File.Sync()
 	}
+
+	return
 }
 
 func fmtLogMsg(args ...interface{}) string {
