@@ -13,10 +13,25 @@ Minimalistic Golang logger that logs to stdout and files.
       
     func main(){
         log := logger.NewLogger("./logs/main.log", true)
+
+        /* Available Logging Levels are
+        LDebug
+        LInfo
+        LWarn
+        LError
+        LFatal*/
+        
         log.Level = logger.LInfo
 
         // This will be ignored because log level is set at Info`
         log.Debug("This is debug", 1, true, log)
 
         log.Info("And this is info", 1)
+        
+        /* Available Logging functions are
+        log.Debug
+        log.Info
+        log.Warn
+        log.Error
+        log.Fatal // This kills the execution with panic()*/
     }
