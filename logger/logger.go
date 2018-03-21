@@ -92,7 +92,7 @@ func fmtLogMsg(args ...interface{}) string {
 			argsStr = append(argsStr, fmt.Sprintf("%v", v))
 			continue
 		}
-		argsStr = append(argsStr, fmt.Sprintf("%#v", v))
+		argsStr = append(argsStr, fmt.Sprintf("%+v", v))
 	}
 
 	return strings.Join(argsStr, ", ")
