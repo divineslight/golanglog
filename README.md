@@ -8,11 +8,11 @@ Minimalistic Golang logger that logs to stdout and files.
     package main
     
     import (
-        "github.com/munirehmad/golanglog/logger"
+        "github.com/munirehmad/golanglog"
     )
       
     func main(){
-        log := logger.NewLogger("./logs/main.log", true)
+        log := golanglog.NewLogger("./logs/main.log", true)
 
         /* Available Logging Levels are
         LDebug
@@ -21,7 +21,7 @@ Minimalistic Golang logger that logs to stdout and files.
         LError
         LFatal*/
         
-        log.Level = logger.LInfo
+        log.Level = golanglog.LInfo
 
         // This will be ignored because log level is set at Info`
         log.Debug("This is debug", 1, true, log)
